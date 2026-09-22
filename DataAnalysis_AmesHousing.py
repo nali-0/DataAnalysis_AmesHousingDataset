@@ -52,7 +52,11 @@ for column in ["Bsmt Full Bath", "Bsmt Half Bath", "BsmtFin SF 1", "BsmtFin SF 2
     data[column] = data[column].fillna(0)
 
 # %%
-data["Lot Frontage"] = data.groupby("Neighborhood")["Lot Frontage"].transform(lambda x: x.fillna(x.median()))
+neighborhood_medians = data.groupby("Neighborhood")["Lot Frontage"].median()
+
+data["Lot Frontage"] = data["Lot Frontage"].fillna(data["Neighborhood"].map(neighborhood_medians))
+
+
 data["Lot Frontage"] = data["Lot Frontage"].fillna(data["Lot Frontage"].median())
 
 # %%
